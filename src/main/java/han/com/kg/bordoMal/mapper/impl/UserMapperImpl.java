@@ -19,7 +19,6 @@ public class UserMapperImpl implements UserMapper {
         response.setFullName(user.getFullName());
         response.setPhone(user.getPhone());
         response.setEmail(user.getEmail());
-        response.setPasswordHash(user.getPasswordHash());
         response.setStatus(user.getStatus());
         response.setRole(user.getRole());
         response.setFavorites(user.getFavorites());

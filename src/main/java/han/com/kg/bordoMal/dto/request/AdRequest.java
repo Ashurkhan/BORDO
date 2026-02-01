@@ -22,23 +22,27 @@ public class AdRequest {
     private String currency;
 
     @NotNull
-    private Long categoryID;
+    private Long categoryId;
 
+    @Valid
+    private SubCategoryRequest subCategory;
 
     @NotNull
     @Valid
     private LocationRequest location;
 
-    public AdRequest(String title, String description, BigDecimal price, String currency, Long categoryID, LocationRequest location) {
+    public AdRequest(String title, String description, BigDecimal price, String currency, Long categoryId, SubCategoryRequest subCategory, LocationRequest location) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.currency = currency;
-        this.categoryID = categoryID;
+        this.categoryId = categoryId;
+        this.subCategory = subCategory;
         this.location = location;
     }
 
     public AdRequest() {
+
     }
 
     public @NotBlank String getTitle() {
@@ -47,22 +51,6 @@ public class AdRequest {
 
     public void setTitle(@NotBlank String title) {
         this.title = title;
-    }
-
-    public @NotNull Long getCategoryID() {
-        return categoryID;
-    }
-
-    public void setCategoryID(@NotNull Long categoryID) {
-        this.categoryID = categoryID;
-    }
-
-    public @NotNull @Valid LocationRequest getLocation() {
-        return location;
-    }
-
-    public void setLocation(@NotNull @Valid LocationRequest location) {
-        this.location = location;
     }
 
     public String getDescription() {
@@ -89,5 +77,31 @@ public class AdRequest {
         this.currency = currency;
     }
 
+    public @NotNull Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(@NotNull Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public @Valid SubCategoryRequest getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(@Valid SubCategoryRequest subCategory) {
+        this.subCategory = subCategory;
+    }
+
+    public @NotNull @Valid LocationRequest getLocation() {
+        return location;
+    }
+
+    public void setLocation(@NotNull @Valid LocationRequest location) {
+        this.location = location;
+    }
 }
+
+
+
 

@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-
 @Entity
-@Table(name = "favourites")
-public class Favorite {
+@Table(name = "ad_votes",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "ad_id"})})
+public class AdVote {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -20,16 +21,23 @@ public class Favorite {
     @JoinColumn(name = "ad_id")
     private Ad ad;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private AdVoteType type;
+
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public Favorite(Long id, User user, Ad ad, LocalDateTime createdAt) {
+    public AdVote(Long id, User user, Ad ad, AdVoteType type, LocalDateTime createdAt) {
         this.id = id;
         this.user = user;
         this.ad = ad;
+        this.type = type;
         this.createdAt = createdAt;
     }
-    public Favorite(){}
+
+    public AdVote() {
+    }
 
     public Long getId() {
         return id;
@@ -53,6 +61,14 @@ public class Favorite {
 
     public void setAd(Ad ad) {
         this.ad = ad;
+    }
+
+    public AdVoteType getType() {
+        return type;
+    }
+
+    public void setType(AdVoteType type) {
+        this.type = type;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -12,19 +12,17 @@ public class UserResponse {
     private String fullName;
     private String phone;
     private String email;
-    private String passwordHash;
     private UserStatus status;
     private UserRole role;
     private Set<Favorite> favorites;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public UserResponse(Long id, String fullName, String phone, String email, String passwordHash, UserStatus status, UserRole role, Set<Favorite> favorites, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UserResponse(Long id, String fullName, String phone, String email, UserStatus status, UserRole role, Set<Favorite> favorites, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.fullName = fullName;
         this.phone = phone;
         this.email = email;
-        this.passwordHash = passwordHash;
         this.status = status;
         this.role = role;
         this.favorites = favorites;
@@ -66,14 +64,6 @@ public class UserResponse {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
     }
 
     public UserStatus getStatus() {

@@ -32,17 +32,18 @@ public class Ad {
     @JoinColumn(name = "seller_id")
     private User seller;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private SubCategory subCategory;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 
 
-    @OneToMany(mappedBy = "ad", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Favorite> favoritedBy = new HashSet<>();
 
     @Column(nullable = false, updatable = false)
@@ -60,7 +61,7 @@ public class Ad {
         updatedAt = LocalDateTime.now();
     }
 
-    public Ad(Long id, String title, String description, BigDecimal price, String currency, AdStatus status, Set<AdView> views, User seller, Category category, Location location, Set<Favorite> favoritedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Ad(Long id, String title, String description, BigDecimal price, String currency, AdStatus status, Set<AdView> views, User seller, Category category, SubCategory subCategory, Location location, Set<Favorite> favoritedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -70,6 +71,7 @@ public class Ad {
         this.views = views;
         this.seller = seller;
         this.category = category;
+        this.subCategory = subCategory;
         this.location = location;
         this.favoritedBy = favoritedBy;
         this.createdAt = createdAt;
@@ -151,6 +153,14 @@ public class Ad {
         this.category = category;
     }
 
+    public SubCategory getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(SubCategory subCategory) {
+        this.subCategory = subCategory;
+    }
+
     public Location getLocation() {
         return location;
     }
@@ -182,6 +192,4 @@ public class Ad {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-
 }

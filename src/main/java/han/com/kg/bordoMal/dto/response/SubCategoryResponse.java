@@ -1,27 +1,16 @@
-package han.com.kg.bordoMal.model;
+package han.com.kg.bordoMal.dto.response;
 
-import jakarta.persistence.*;
-
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@Table(name = "categories")
-public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class SubCategoryResponse {
     private Long id;
-
-    @Column(nullable = false, unique = true)
     private String name;
 
-    public Category(Long id, String name) {
+    public SubCategoryResponse(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Category() {
+    public SubCategoryResponse() {
+
     }
 
     public Long getId() {
@@ -40,3 +29,4 @@ public class Category {
         this.name = name;
     }
 }
+

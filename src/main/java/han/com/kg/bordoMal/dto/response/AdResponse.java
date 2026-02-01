@@ -1,48 +1,58 @@
 package han.com.kg.bordoMal.dto.response;
 
 import han.com.kg.bordoMal.model.AdStatus;
+import han.com.kg.bordoMal.model.SubCategory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 public class AdResponse {
 
     private Long id;
     private String title;
     private String description;
+
     private BigDecimal price;
     private String currency;
+
     private AdStatus status;
-
-    private CategoryResponse category;
-    private LocationResponse location;
-
-    private SellerResponse seller;
-
-    private int viewsCount;
-    private int favoritesCount;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public AdResponse(Long id, String title, String description, BigDecimal price, String currency, AdStatus status, CategoryResponse category, LocationResponse location, SellerResponse seller, int viewsCount, int favoritesCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private int viewsCount;
+    private int favoritesCount;
+
+    private SellerResponse seller;
+
+    private CategoryResponse category;
+
+    private SubCategoryResponse subCategory;
+
+    private LocationResponse location;
+
+    private long likesCount;
+    private long dislikesCount;
+
+    public AdResponse(Long id, String title, String description, BigDecimal price, String currency, AdStatus status, LocalDateTime createdAt, LocalDateTime updatedAt, int viewsCount, int favoritesCount, SellerResponse seller, CategoryResponse category, SubCategoryResponse subCategory, LocationResponse location, long likesCount, long dislikesCount) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
         this.currency = currency;
         this.status = status;
-        this.category = category;
-        this.location = location;
-        this.seller = seller;
-        this.viewsCount = viewsCount;
-        this.favoritesCount = favoritesCount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.viewsCount = viewsCount;
+        this.favoritesCount = favoritesCount;
+        this.seller = seller;
+        this.category = category;
+        this.subCategory = subCategory;
+        this.location = location;
+        this.likesCount = likesCount;
+        this.dislikesCount = dislikesCount;
     }
 
     public AdResponse() {
-
     }
 
     public Long getId() {
@@ -93,28 +103,20 @@ public class AdResponse {
         this.status = status;
     }
 
-    public CategoryResponse getCategory() {
-        return category;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCategory(CategoryResponse category) {
-        this.category = category;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocationResponse getLocation() {
-        return location;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setLocation(LocationResponse location) {
-        this.location = location;
-    }
-
-    public SellerResponse getSeller() {
-        return seller;
-    }
-
-    public void setSeller(SellerResponse seller) {
-        this.seller = seller;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public int getViewsCount() {
@@ -133,21 +135,55 @@ public class AdResponse {
         this.favoritesCount = favoritesCount;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public SellerResponse getSeller() {
+        return seller;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setSeller(SellerResponse seller) {
+        this.seller = seller;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public CategoryResponse getCategory() {
+        return category;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCategory(CategoryResponse category) {
+        this.category = category;
+    }
+
+    public SubCategoryResponse getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(SubCategoryResponse subCategory) {
+        this.subCategory = subCategory;
+    }
+
+    public LocationResponse getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationResponse location) {
+        this.location = location;
+    }
+
+    public long getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(long likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public long getDislikesCount() {
+        return dislikesCount;
+    }
+
+    public void setDislikesCount(long dislikesCount) {
+        this.dislikesCount = dislikesCount;
     }
 }
+
+
 
 
