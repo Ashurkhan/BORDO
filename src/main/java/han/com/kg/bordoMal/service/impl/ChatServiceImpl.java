@@ -3,14 +3,14 @@ package han.com.kg.bordoMal.service.impl;
 import han.com.kg.bordoMal.exception.NotFoundException;
 import han.com.kg.bordoMal.mapper.ChatMapper;
 import han.com.kg.bordoMal.mapper.MessageMapper;
-import han.com.kg.bordoMal.model.Ad;
-import han.com.kg.bordoMal.model.Chat;
-import han.com.kg.bordoMal.model.Message;
-import han.com.kg.bordoMal.model.User;
+import han.com.kg.bordoMal.model.*;
 import han.com.kg.bordoMal.repository.AdRepository;
 import han.com.kg.bordoMal.repository.ChatRepository;
 import han.com.kg.bordoMal.repository.MessageRepository;
 import han.com.kg.bordoMal.service.ChatService;
+import han.com.kg.bordoMal.service.NotificationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,19 +22,18 @@ import java.time.LocalDateTime;
 
 @Service
 public class ChatServiceImpl implements ChatService {
+    private static final Logger log = LoggerFactory.getLogger(ChatServiceImpl.class);
 
     private final ChatRepository chatRepository;
     private final MessageRepository messageRepository;
     private final AdRepository adRepository;
-    private  final MessageMapper messageMapper;
-    private final ChatMapper chatMapper;
+    private final NotificationService notificationService;
 
-    public ChatServiceImpl(ChatRepository chatRepository, MessageRepository messageRepository, AdRepository adRepository, MessageMapper messageMapper, ChatMapper chatMapper) {
+    public ChatServiceImpl(ChatRepository chatRepository, MessageRepository messageRepository, AdRepository adRepository, NotificationService notificationService) {
         this.chatRepository = chatRepository;
         this.messageRepository = messageRepository;
         this.adRepository = adRepository;
-        this.messageMapper = messageMapper;
-        this.chatMapper = chatMapper;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -71,7 +70,29 @@ public class ChatServiceImpl implements ChatService {
         chat.setUpdatedAt(LocalDateTime.now());
         chatRepository.save(chat);
 
-        return messageRepository.save(msg);
+        Message saved = messageRepository.save(msg);
+
+        User receiver;
+        if (sender.equals(chat.getSeller())) {
+            receiver = chat.getBuyer();
+        } else {
+            receiver = chat.getSeller();
+        }
+
+        if (receiver != null) {
+            try {
+                notificationService.notify(
+                        receiver,
+                        NotificationType.NEW_MESSAGE,
+                        "Новое сообщение по объявлению",
+                        chat.getId()
+                );
+            } catch (Exception e) {
+                log.error("Failed to send notification for chat {}: {}", chat.getId(), e.getMessage(), e);
+            }
+        }
+
+        return saved;
     }
 
     @Override

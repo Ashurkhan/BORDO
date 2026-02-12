@@ -50,6 +50,8 @@ public class Ad {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Image> images = new HashSet<>();
 
     @PrePersist
     void onCreate() {
@@ -61,7 +63,7 @@ public class Ad {
         updatedAt = LocalDateTime.now();
     }
 
-    public Ad(Long id, String title, String description, BigDecimal price, String currency, AdStatus status, Set<AdView> views, User seller, Category category, SubCategory subCategory, Location location, Set<Favorite> favoritedBy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Ad(Long id, String title, String description, BigDecimal price, String currency, AdStatus status, Set<AdView> views, User seller, Category category, SubCategory subCategory, Location location, Set<Favorite> favoritedBy, LocalDateTime createdAt, LocalDateTime updatedAt, Set<Image> images) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -76,6 +78,7 @@ public class Ad {
         this.favoritedBy = favoritedBy;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.images = images;
     }
 
     public Ad() {
@@ -143,6 +146,14 @@ public class Ad {
 
     public void setSeller(User seller) {
         this.seller = seller;
+    }
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
     }
 
     public Category getCategory() {

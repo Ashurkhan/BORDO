@@ -1,8 +1,9 @@
 package han.com.kg.bordoMal.model;
 
 public enum NotificationType {
-    AD_VIEWED,
-    MESSAGE_RECEIVED,
-    FAVORITE_AD,
+    NEW_MESSAGE,
+    AD_LIKED,
+    AD_DISLIKED,
+    AD_FAVOURITED,
     SYSTEM
 }

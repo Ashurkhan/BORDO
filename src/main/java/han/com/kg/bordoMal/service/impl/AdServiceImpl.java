@@ -1,20 +1,22 @@
 package han.com.kg.bordoMal.service.impl;
 
+import han.com.kg.bordoMal.dto.request.AdFilterRequest;
 import han.com.kg.bordoMal.dto.request.AdRequest;
 import han.com.kg.bordoMal.dto.request.AdUpdateRequest;
 import han.com.kg.bordoMal.dto.response.AdResponse;
 import han.com.kg.bordoMal.exception.NotFoundException;
 import han.com.kg.bordoMal.mapper.AdMapper;
 import han.com.kg.bordoMal.model.Ad;
-import han.com.kg.bordoMal.model.AdStatus;
 import han.com.kg.bordoMal.model.User;
 import han.com.kg.bordoMal.repository.AdRepository;
+import han.com.kg.bordoMal.repository.specification.AdSpecification;
 import han.com.kg.bordoMal.service.AdService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class AdServiceImpl implements AdService {
@@ -42,9 +44,10 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public List<AdResponse> getAll() {
-        List<Ad> ads=adRepository.findAll();
-        return  adMapper.tDtos(ads);
+    public Page<AdResponse> getAll(AdFilterRequest filter, Pageable pageable) {
+        Specification<Ad> spec = AdSpecification.withFilters(filter);
+        return adRepository.findAll(spec, pageable)
+                .map(adMapper::tDto);
     }
 
     @Override

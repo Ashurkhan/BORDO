@@ -3,35 +3,81 @@ package han.com.kg.bordoMal.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "images")
 public class Image {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String url;
+    @Column(nullable = false)
+    private String url; // ссылка на изображение (можно хранить путь в файловой системе или в облаке)
 
-    @Enumerated(EnumType.STRING)
-    private ImageType type;
+    @Column(nullable = false)
+    private boolean main; // true = главное изображение
 
-    private Long ownerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
 
-    private boolean isMain;
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
-
     @PrePersist
-    void onCreate() {
-        createdAt = LocalDateTime.now();
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    @PreUpdate
-    void onUpdate() {
-        updatedAt = LocalDateTime.now();
+    public Image(Long id, String url, boolean main, Ad ad, LocalDateTime createdAt) {
+        this.id = id;
+        this.url = url;
+        this.main = main;
+        this.ad = ad;
+        this.createdAt = createdAt;
     }
 
+    public Image() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public boolean isMain() {
+        return main;
+    }
+
+    public void setMain(boolean main) {
+        this.main = main;
+    }
+
+    public Ad getAd() {
+        return ad;
+    }
+
+    public void setAd(Ad ad) {
+        this.ad = ad;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
+

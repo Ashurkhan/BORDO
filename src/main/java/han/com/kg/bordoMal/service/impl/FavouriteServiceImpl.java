@@ -5,27 +5,35 @@ import han.com.kg.bordoMal.exception.NotFoundException;
 import han.com.kg.bordoMal.mapper.AdMapper;
 import han.com.kg.bordoMal.model.Ad;
 import han.com.kg.bordoMal.model.Favorite;
+import han.com.kg.bordoMal.model.NotificationType;
 import han.com.kg.bordoMal.model.User;
 import han.com.kg.bordoMal.repository.AdRepository;
 import han.com.kg.bordoMal.repository.FavoriteRepository;
 import han.com.kg.bordoMal.service.FavoriteService;
+import han.com.kg.bordoMal.service.NotificationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class FavoriteServiceImpl implements FavoriteService {
+public class FavouriteServiceImpl implements FavoriteService {
+    private static final Logger log = LoggerFactory.getLogger(FavouriteServiceImpl.class);
+
     private final FavoriteRepository favoriteRepository;
     private final AdRepository adRepository;
     private final AdMapper mapper;
+    private final NotificationService notificationService;
 
-    public FavoriteServiceImpl(FavoriteRepository favoriteRepository, AdRepository adRepository,AdMapper mapper) {
+    public FavouriteServiceImpl(FavoriteRepository favoriteRepository, AdRepository adRepository, AdMapper mapper, NotificationService notificationService) {
         this.favoriteRepository = favoriteRepository;
         this.adRepository = adRepository;
-        this.mapper=mapper;
+        this.mapper = mapper;
+        this.notificationService = notificationService;
     }
+
 
     @Override
     public void addToFavorites(User user, Long adId) {
@@ -43,6 +51,19 @@ public class FavoriteServiceImpl implements FavoriteService {
         favorite.setAd(ad);
 
         favoriteRepository.save(favorite);
+        User receiver = ad.getSeller();
+        if (receiver != null) {
+            try {
+                notificationService.notify(
+                        receiver,
+                        NotificationType.AD_FAVOURITED,
+                        "Ваше объявление добавлено в избранное",
+                        ad.getId()
+                );
+            } catch (Exception e) {
+                log.error("Failed to send favourite notification for ad {}: {}", ad.getId(), e.getMessage(), e);
+            }
+        }
     }
 
     @Override

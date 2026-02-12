@@ -6,46 +6,48 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "messages")
 public class Message {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_id")
+    @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "is_read", nullable = false)
+    private boolean read;
+
+    @Column(nullable = false)
+    private boolean deleted;
+
+    @Column(name = "sent_at", nullable = false, updatable = false)
     private LocalDateTime sentAt;
-
-    private Boolean read = false;
-
-    private Boolean deleted = false; // soft delete
-
 
     @PrePersist
     void onCreate() {
-        sentAt = LocalDateTime.now();
+        this.read = false;
+        this.deleted = false;
+        this.sentAt = LocalDateTime.now();
     }
 
-    public Message(Long id, Chat chat, User sender, String content, LocalDateTime sentAt, Boolean read, Boolean deleted) {
+    public Message(Long id, Chat chat, User sender, String content, boolean read, boolean deleted, LocalDateTime sentAt) {
         this.id = id;
         this.chat = chat;
         this.sender = sender;
         this.content = content;
-        this.sentAt = sentAt;
         this.read = read;
         this.deleted = deleted;
+        this.sentAt = sentAt;
     }
-
-    public Message() {
-    }
+    public Message(){}
 
     public Long getId() {
         return id;
@@ -79,6 +81,22 @@ public class Message {
         this.content = content;
     }
 
+    public boolean getRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public LocalDateTime getSentAt() {
         return sentAt;
     }
@@ -87,19 +105,7 @@ public class Message {
         this.sentAt = sentAt;
     }
 
-    public Boolean getRead() {
-        return read;
-    }
 
-    public void setRead(Boolean read) {
-        this.read = read;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
 }
+
+

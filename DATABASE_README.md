@@ -53,3 +53,12 @@ com.example.livestock
 │   └── notification
 │
 └── LivestockApplication.java
+
+/////
+INSERT INTO categories ( name) VALUES
+('Крупный рогатый скот'),
+('Мелкий рогатый скот'),
+( 'Лошади'),
+( 'Птица'),
+( 'Корма'),
+( 'Прочее');

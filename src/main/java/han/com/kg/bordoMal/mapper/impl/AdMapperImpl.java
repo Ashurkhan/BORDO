@@ -19,9 +19,12 @@ import java.util.List;
 public class AdMapperImpl implements AdMapper {
     private final CategoryRepository categoryRepository;
     private final AdVoteService adVoteService;
-    public AdMapperImpl(CategoryRepository categoryRepository,AdVoteService adVoteservice ) {
+    private final ImageMapperImpl imageMapper;
+
+    public AdMapperImpl(CategoryRepository categoryRepository, AdVoteService adVoteService, ImageMapperImpl imageMapper) {
         this.categoryRepository = categoryRepository;
-        this.adVoteService=adVoteservice;
+        this.adVoteService = adVoteService;
+        this.imageMapper = imageMapper;
     }
 
     @Override
@@ -71,6 +74,13 @@ public class AdMapperImpl implements AdMapper {
                     ad.getLocation().getRegion(),
                     ad.getLocation().getCountry()
             ));
+        }
+        if (ad.getImages() != null) {
+            response.setImages(
+                    ad.getImages().stream()
+                            .map(imageMapper::tDto)
+                            .toList()
+            );
         }
 
         response.setLikesCount(adVoteService.getLikesCount(ad));

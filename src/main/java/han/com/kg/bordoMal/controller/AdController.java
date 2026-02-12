@@ -1,17 +1,24 @@
 package han.com.kg.bordoMal.controller;
 
+import han.com.kg.bordoMal.dto.request.AdFilterRequest;
 import han.com.kg.bordoMal.dto.request.AdRequest;
 import han.com.kg.bordoMal.dto.request.AdUpdateRequest;
 import han.com.kg.bordoMal.dto.response.AdResponse;
+import han.com.kg.bordoMal.model.AdStatus;
 import han.com.kg.bordoMal.model.User;
 import han.com.kg.bordoMal.security.CustomUserDetails;
 import han.com.kg.bordoMal.service.AdService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.math.BigDecimal;
+
 
 @RestController
 @RequestMapping("/api/ad/")
@@ -52,9 +59,26 @@ public class AdController {
     }
 
     @GetMapping("getAll")
-    public ResponseEntity<List<AdResponse>> getAll() {
-        List<AdResponse> responses = adService.getAll();
-        return ResponseEntity.ok(responses);
+    public Page<AdResponse> getAllAds(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) String region,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) AdStatus status,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable
+    ) {
+        AdFilterRequest filter = new AdFilterRequest();
+        filter.setTitle(title);
+        filter.setCategoryId(categoryId);
+        filter.setMinPrice(minPrice);
+        filter.setMaxPrice(maxPrice);
+        filter.setRegion(region);
+        filter.setCity(city);
+        filter.setStatus(status);
+        return adService.getAll(filter, pageable);
     }
 
     @DeleteMapping("delete/{id}")

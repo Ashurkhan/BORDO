@@ -15,7 +15,8 @@ public class MessageMapperImpl implements MessageMapper {
         resp.setSenderName(msg.getSender().getFullName());
         resp.setContent(msg.getContent());
         resp.setSentAt(msg.getSentAt());
-        resp.setRead(msg.getRead());
+        resp.setRead(false);
+        resp.setDeleted(false);
         return resp;
     }
 

@@ -5,6 +5,8 @@ import han.com.kg.bordoMal.model.SubCategory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
 public class AdResponse {
 
     private Long id;
@@ -29,11 +31,11 @@ public class AdResponse {
     private SubCategoryResponse subCategory;
 
     private LocationResponse location;
-
+    private List<ImageResponse> images;
     private long likesCount;
     private long dislikesCount;
 
-    public AdResponse(Long id, String title, String description, BigDecimal price, String currency, AdStatus status, LocalDateTime createdAt, LocalDateTime updatedAt, int viewsCount, int favoritesCount, SellerResponse seller, CategoryResponse category, SubCategoryResponse subCategory, LocationResponse location, long likesCount, long dislikesCount) {
+    public AdResponse(Long id, String title, String description, BigDecimal price, String currency, AdStatus status, LocalDateTime createdAt, LocalDateTime updatedAt, int viewsCount, int favoritesCount, SellerResponse seller, CategoryResponse category, SubCategoryResponse subCategory, LocationResponse location, List<ImageResponse> images, long likesCount, long dislikesCount) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -48,6 +50,7 @@ public class AdResponse {
         this.category = category;
         this.subCategory = subCategory;
         this.location = location;
+        this.images = images;
         this.likesCount = likesCount;
         this.dislikesCount = dislikesCount;
     }
@@ -85,6 +88,14 @@ public class AdResponse {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public List<ImageResponse> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ImageResponse> images) {
+        this.images = images;
     }
 
     public String getCurrency() {
